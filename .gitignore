@@ -2,3 +2,5 @@
 /build
 /dist
 /nbproject
+/setup/glassfish-resources.xml
+/src/conf/
