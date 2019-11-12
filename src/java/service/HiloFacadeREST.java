@@ -82,13 +82,6 @@ public class HiloFacadeREST extends AbstractFacade<Hilo> {
     public String countREST() {
         return String.valueOf(super.count());
     }
-    
-    @GET
-    @Path("{titulo}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Hilo> findByTitulo(){
-        return null;
-    }
 
     @Override
     protected EntityManager getEntityManager() {
