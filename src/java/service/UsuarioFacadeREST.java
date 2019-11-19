@@ -87,5 +87,18 @@ public class UsuarioFacadeREST extends AbstractFacade<Usuario> {
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+    @GET
+    @Path("like/{email}")
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public List<Usuario> findLikeEmail(@PathParam("email") String email){
+        return em.createNamedQuery("Usuario.findLikeEmail").getResultList();
+        
+    }
+    @GET
+    @Path("n_mensajes/{id}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Integer countMensajes(@PathParam("id") String id){
+        return em.createNamedQuery("Usuario.countMensajes").getFirstResult();
+        
+    }
 }

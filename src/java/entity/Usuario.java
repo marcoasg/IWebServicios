@@ -31,7 +31,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")
     , @NamedQuery(name = "Usuario.findByEmail", query = "SELECT u FROM Usuario u WHERE u.email = :email")
-    , @NamedQuery(name = "Usuario.findByToken", query = "SELECT u FROM Usuario u WHERE u.token = :token")})
+    , @NamedQuery(name = "Usuario.findByToken", query = "SELECT u FROM Usuario u WHERE u.token = :token")
+    , @NamedQuery(name = "Usuario.findLikeEmail", query = "SELECT u FROM Usuario u WHERE u.email LIKE CONCAT('%, :email, %'")
+    , @NamedQuery(name = "Usuario.countMensajes", query = "SELECT COUNT(m) FROM Usuario u, Mensaje m WHERE m.usuario = :id")})
+
 public class Usuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
