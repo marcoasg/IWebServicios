@@ -97,8 +97,8 @@ public class UsuarioFacadeREST extends AbstractFacade<Usuario> {
     @GET
     @Path("n_mensajes/{id}")
     @Produces(MediaType.TEXT_PLAIN)
-    public Integer countMensajes(@PathParam("id") String id){
-        return em.createNamedQuery("Usuario.countMensajes").setParameter("id", id).getFirstResult();
+    public Long countMensajes(@PathParam("id") String id){
+        return (Long) em.createNamedQuery("Usuario.countMensajes").setParameter("id", id).getSingleResult();
         
     }
 }

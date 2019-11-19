@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Usuario.findByEmail", query = "SELECT u FROM Usuario u WHERE u.email = :email")
     , @NamedQuery(name = "Usuario.findByToken", query = "SELECT u FROM Usuario u WHERE u.token = :token")
     , @NamedQuery(name = "Usuario.findLikeEmail", query = "SELECT u FROM Usuario u WHERE u.email LIKE CONCAT('%', :email , '%')")
-    , @NamedQuery(name = "Usuario.countMensajes", query = "SELECT COUNT(*) FROM Usuario u, Mensaje m WHERE m.usuario = :id")})
+    , @NamedQuery(name = "Usuario.countMensajes", query = "SELECT COUNT(m) FROM Usuario u, Mensaje m WHERE m.usuario.email = :id")})
 
 public class Usuario implements Serializable {
 
