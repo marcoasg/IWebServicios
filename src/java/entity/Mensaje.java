@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -29,7 +32,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Mensaje.findAll", query = "SELECT m FROM Mensaje m")
     , @NamedQuery(name = "Mensaje.findByTexto", query = "SELECT m FROM Mensaje m WHERE m.texto = :texto")
-    , @NamedQuery(name = "Mensaje.findById", query = "SELECT m FROM Mensaje m WHERE m.id = :id")})
+    , @NamedQuery(name = "Mensaje.findById", query = "SELECT m FROM Mensaje m WHERE m.id = :id")
+    , @NamedQuery(name = "Mensaje.findByFecha", query = "SELECT m FROM Mensaje m WHERE m.fecha = :fecha")})
 public class Mensaje implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -43,6 +47,11 @@ public class Mensaje implements Serializable {
     @NotNull
     @Column(name = "id")
     private Integer id;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "fecha")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fecha;
     @JoinColumn(name = "hilo", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Hilo hilo;
@@ -57,9 +66,10 @@ public class Mensaje implements Serializable {
         this.id = id;
     }
 
-    public Mensaje(Integer id, String texto) {
+    public Mensaje(Integer id, String texto, Date fecha) {
         this.id = id;
         this.texto = texto;
+        this.fecha = fecha;
     }
 
     public String getTexto() {
@@ -76,6 +86,14 @@ public class Mensaje implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 
     public Hilo getHilo() {

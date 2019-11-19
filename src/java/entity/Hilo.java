@@ -7,6 +7,7 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,6 +19,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -33,7 +36,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Hilo.findAll", query = "SELECT h FROM Hilo h")
     , @NamedQuery(name = "Hilo.findByTitulo", query = "SELECT h FROM Hilo h WHERE h.titulo = :titulo")
-    , @NamedQuery(name = "Hilo.findById", query = "SELECT h FROM Hilo h WHERE h.id = :id")})
+    , @NamedQuery(name = "Hilo.findById", query = "SELECT h FROM Hilo h WHERE h.id = :id")
+    , @NamedQuery(name = "Hilo.findByFecha", query = "SELECT h FROM Hilo h WHERE h.fecha = :fecha")})
 public class Hilo implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -47,6 +51,11 @@ public class Hilo implements Serializable {
     @NotNull
     @Column(name = "id")
     private Integer id;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "fecha")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fecha;
     @JoinColumn(name = "tema", referencedColumnName = "titulo")
     @ManyToOne(optional = false)
     private Tema tema;
@@ -63,9 +72,10 @@ public class Hilo implements Serializable {
         this.id = id;
     }
 
-    public Hilo(Integer id, String titulo) {
+    public Hilo(Integer id, String titulo, Date fecha) {
         this.id = id;
         this.titulo = titulo;
+        this.fecha = fecha;
     }
 
     public String getTitulo() {
@@ -82,6 +92,14 @@ public class Hilo implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 
     public Tema getTema() {
