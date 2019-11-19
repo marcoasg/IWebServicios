@@ -91,14 +91,14 @@ public class UsuarioFacadeREST extends AbstractFacade<Usuario> {
     @Path("like/{email}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public List<Usuario> findLikeEmail(@PathParam("email") String email){
-        return em.createNamedQuery("Usuario.findLikeEmail").getResultList();
+        return em.createNamedQuery("Usuario.findLikeEmail").setParameter("email", email).getResultList();
         
     }
     @GET
     @Path("n_mensajes/{id}")
     @Produces(MediaType.TEXT_PLAIN)
     public Integer countMensajes(@PathParam("id") String id){
-        return em.createNamedQuery("Usuario.countMensajes").getFirstResult();
+        return em.createNamedQuery("Usuario.countMensajes").setParameter("id", id).getFirstResult();
         
     }
 }
