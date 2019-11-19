@@ -33,7 +33,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Mensaje.findAll", query = "SELECT m FROM Mensaje m")
     , @NamedQuery(name = "Mensaje.findByTexto", query = "SELECT m FROM Mensaje m WHERE m.texto = :texto")
     , @NamedQuery(name = "Mensaje.findById", query = "SELECT m FROM Mensaje m WHERE m.id = :id")
-    , @NamedQuery(name = "Mensaje.findByFecha", query = "SELECT m FROM Mensaje m WHERE m.fecha = :fecha")})
+    , @NamedQuery(name = "Mensaje.findByFecha", query = "SELECT m FROM Mensaje m WHERE m.fecha = :fecha")
+    , @NamedQuery(name = "Mensaje.findByHilo", query = "SELECT m FROM Mensaje m WHERE m.hilo.id = :id")})
 public class Mensaje implements Serializable {
 
     private static final long serialVersionUID = 1L;

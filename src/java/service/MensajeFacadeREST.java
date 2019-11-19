@@ -82,6 +82,13 @@ public class MensajeFacadeREST extends AbstractFacade<Mensaje> {
     public String countREST() {
         return String.valueOf(super.count());
     }
+    
+    @GET
+    @Path("fromHilo/{id}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Mensaje> nombre(@PathParam("id") Integer id){
+        return em.createNamedQuery("Mensaje.findByHilo").setParameter("id", id).getResultList();
+    }
 
     @Override
     protected EntityManager getEntityManager() {
