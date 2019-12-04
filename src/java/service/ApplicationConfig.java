@@ -16,7 +16,7 @@ public class ApplicationConfig extends Application {
         //add all resources classes
         resources.add(service.HiloFacadeREST.class);
         resources.add(service.MensajeFacadeREST.class);
-        resources.add(service.UsuarioFacadeREST.class);
         resources.add(service.TemaFacadeREST.class);
+        resources.add(service.UsuarioFacadeREST.class);
     }
 }
