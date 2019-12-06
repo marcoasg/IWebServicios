@@ -84,9 +84,9 @@ public class MensajeFacadeREST extends AbstractFacade<Mensaje> {
     }
     
     @GET
-    @Path("fromHilo/{id}")
+    @Path("from_hilo/{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Mensaje> nombre(@PathParam("id") Integer id){
+    public List<Mensaje> mensajesHilo(@PathParam("id") Integer id){
         return em.createNamedQuery("Mensaje.findByHilo").setParameter("id", id).getResultList();
     }
 

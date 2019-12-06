@@ -14,6 +14,7 @@ public class ApplicationConfig extends Application {
     }
     private void addRestResourceClasses(Set<Class<?>> resources) {
         //add all resources classes
+        resources.add(service.DatosREST.class);
         resources.add(service.HiloFacadeREST.class);
         resources.add(service.MensajeFacadeREST.class);
         resources.add(service.TemaFacadeREST.class);
