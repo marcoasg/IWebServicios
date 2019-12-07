@@ -18,6 +18,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -45,10 +46,10 @@ public class UsuarioFacadeREST extends AbstractFacade<Usuario> {
     @POST
     @Path("postByString")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void createByEmailAndName(List<String> params) {
+    public void createByEmailAndName(@QueryParam("email") String email, @QueryParam("name") String name) {
         Usuario u = new Usuario();
-        u.setEmail(params.get(0));
-        u.setToken(params.get(1));
+        u.setEmail(email);
+        u.setToken(name);
         super.create(u);
     }
 
