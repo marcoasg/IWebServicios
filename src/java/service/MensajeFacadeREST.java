@@ -6,6 +6,7 @@
 package service;
 
 import entity.Mensaje;
+import java.sql.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -90,6 +91,13 @@ public class MensajeFacadeREST extends AbstractFacade<Mensaje> {
         return em.createNamedQuery("Mensaje.findByHilo").setParameter("id", id).getResultList();
     }
 
+    @GET
+    @Path("findByIntervaloFechas/{fechaMinima}/{fechaMaxima}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Mensaje> findByIntervaloFechas(@PathParam("fechaMinima") Date fechaMinima, @PathParam("fechaMaxima") Date fechaMaxima){
+        return em.createNamedQuery("Mensaje.findByIntervaloFechas").setParameter("fechaMinima", fechaMinima).setParameter("fechaMaxima", fechaMaxima).getResultList();
+    }
+    
     @Override
     protected EntityManager getEntityManager() {
         return em;
