@@ -37,7 +37,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Hilo.findAll", query = "SELECT h FROM Hilo h")
     , @NamedQuery(name = "Hilo.findByTitulo", query = "SELECT h FROM Hilo h WHERE h.titulo = :titulo")
     , @NamedQuery(name = "Hilo.findById", query = "SELECT h FROM Hilo h WHERE h.id = :id")
-    , @NamedQuery(name = "Hilo.findByFecha", query = "SELECT h FROM Hilo h WHERE h.fecha = :fecha")})
+    , @NamedQuery(name = "Hilo.findByFecha", query = "SELECT h FROM Hilo h WHERE h.fecha = :fecha")
+    , @NamedQuery(name = "Hilo.hilosPorMensajesUsuario", query = "SELECT h FROM Hilo h, Usuario u, Mensaje m WHERE u.email = :id AND m.hilo.id = h.id AND m.usuario.email = u.email")})
 public class Hilo implements Serializable {
 
     private static final long serialVersionUID = 1L;

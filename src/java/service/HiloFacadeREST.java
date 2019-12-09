@@ -83,6 +83,15 @@ public class HiloFacadeREST extends AbstractFacade<Hilo> {
         return String.valueOf(super.count());
     }
 
+    
+    @GET
+    @Path("hilosPorMensajesUsuario/{id}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Hilo> hilosPorMensajesUsuario(@PathParam("id") String id){
+        return em.createNamedQuery("Hilo.hilosPorMensajesUsuario").setParameter("id", id).getResultList();
+    }
+    
+    
     @Override
     protected EntityManager getEntityManager() {
         return em;
