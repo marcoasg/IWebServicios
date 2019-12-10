@@ -46,11 +46,11 @@ public class UsuarioFacadeREST extends AbstractFacade<Usuario> {
     @POST
     @Path("postByString")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void createByEmailAndName(@QueryParam("email") String email, @QueryParam("name") String name) {
+    public void registerByEmailAndName(@QueryParam("email") String email, @QueryParam("name") String name) {
         Usuario u = new Usuario();
         u.setEmail(email);
         u.setToken(name);
-        super.create(u);
+        super.edit(u);
     }
 
     @PUT

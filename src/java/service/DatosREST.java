@@ -15,10 +15,12 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import org.json.*;
 
@@ -29,12 +31,20 @@ import org.json.*;
 @Stateless
 @Path("datos")
 public class DatosREST {
+    
+    @Context
+    private HttpServletResponse response;
+    
+    private void addHeaders(){
+        response.addHeader("Access-Control-Allow-Origin", "*");
+    }
 
     @GET
     @Path("fuentes")
     @Produces(MediaType.APPLICATION_JSON)
     public String fuentesREST() throws MalformedURLException, IOException, JSONException {
         installTrustManager();
+        addHeaders();
         URL url = new URL("https://datosabiertos.malaga.eu/api/3/action/datastore_search?resource_id=8d0f2d6e-b99d-42f1-929e-8bf25938af27");
         return getRecords(url).toString();
     }
@@ -44,6 +54,7 @@ public class DatosREST {
     @Produces(MediaType.APPLICATION_JSON)
     public String musculacionREST() throws MalformedURLException, IOException, JSONException {
         installTrustManager();
+        addHeaders();
         URL url = new URL("https://datosabiertos.malaga.eu/api/3/action/datastore_search?resource_id=15bc08d4-dad1-4bae-a644-682d474bc90e");
         return getRecords(url).toString();
     }
@@ -53,11 +64,12 @@ public class DatosREST {
     @Produces(MediaType.APPLICATION_JSON)
     public String aparcamientosREST() throws MalformedURLException, IOException, JSONException {
         installTrustManager();
+        addHeaders();
         URL url = new URL("https://datosabiertos.malaga.eu/api/3/action/datastore_search?resource_id=3bb304f9-9de3-4bac-943e-7acce7e8e8f9");
         return getRecords(url).toString();
     }
     
-     @GET
+    @GET
     @Path("plazas_libres/{id}")
     @Produces(MediaType.TEXT_PLAIN)
     public String aparcamientosLibresREST(@PathParam("id") Integer id) throws MalformedURLException, IOException, JSONException {
@@ -71,6 +83,7 @@ public class DatosREST {
     @Produces(MediaType.APPLICATION_JSON)
     public String carrilesBici() throws MalformedURLException, IOException, JSONException {
         installTrustManager();
+        addHeaders();
         URL url = new URL("https://datosabiertos.malaga.eu/api/3/action/datastore_search?resource_id=9b3b8fe2-8c03-4420-b718-f36ea541f8fd");
         return getRecords(url).toString();
     }
@@ -80,6 +93,7 @@ public class DatosREST {
     @Produces(MediaType.APPLICATION_JSON)
     public String fuente_cercana(@PathParam("x") Double x, @PathParam("y") Double y ) throws MalformedURLException, IOException, JSONException {
         installTrustManager();
+        addHeaders();
         URL url = new URL("https://datosabiertos.malaga.eu/api/3/action/datastore_search?resource_id=8d0f2d6e-b99d-42f1-929e-8bf25938af27");
         return fuenteMasCercana(x,y,getRecords(url)).toString();
     }
@@ -89,6 +103,7 @@ public class DatosREST {
     @Produces(MediaType.APPLICATION_JSON)
     public String bici_cercana(@PathParam("x") Double x, @PathParam("y") Double y ) throws MalformedURLException, IOException, JSONException {
         installTrustManager();
+        addHeaders();
         URL url = new URL("https://datosabiertos.malaga.eu/api/3/action/datastore_search?resource_id=3bb304f9-9de3-4bac-943e-7acce7e8e8f9");
         return biciMasCercana(x,y,getRecords(url)).toString();
     }
@@ -128,6 +143,7 @@ public class DatosREST {
 
     private JSONArray getRecords(URL url) throws JSONException, IOException {
         HttpsURLConnection conn = (HttpsURLConnection)url.openConnection();
+        conn.addRequestProperty("Access-Control-Allow-Origin", "localhost:8080");
         BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
         String inputInline;
         StringBuffer response = new StringBuffer();
