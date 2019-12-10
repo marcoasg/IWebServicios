@@ -45,8 +45,8 @@ public class DatosREST {
     public String fuentesREST() throws MalformedURLException, IOException, JSONException {
         installTrustManager();
         addHeaders();
-        URL url = new URL("https://datosabiertos.malaga.eu/api/3/action/datastore_search?resource_id=8d0f2d6e-b99d-42f1-929e-8bf25938af27");
-        return getRecords(url).toString();
+        URL url = new URL("https://datosabiertos.malaga.eu/recursos/ambiente/fuentesaguapotable/da_medioAmbiente_fuentes-25830.geojson");
+        return getGeojson(url).toString();
     }
     
     @GET
@@ -56,7 +56,7 @@ public class DatosREST {
         installTrustManager();
         addHeaders();
         URL url = new URL("https://datosabiertos.malaga.eu/api/3/action/datastore_search?resource_id=15bc08d4-dad1-4bae-a644-682d474bc90e");
-        return getRecords(url).toString();
+        return getGeojson(url).toString();
     }
     
     @GET
@@ -66,16 +66,7 @@ public class DatosREST {
         installTrustManager();
         addHeaders();
         URL url = new URL("https://datosabiertos.malaga.eu/api/3/action/datastore_search?resource_id=3bb304f9-9de3-4bac-943e-7acce7e8e8f9");
-        return getRecords(url).toString();
-    }
-    
-    @GET
-    @Path("plazas_libres/{id}")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String aparcamientosLibresREST(@PathParam("id") Integer id) throws MalformedURLException, IOException, JSONException {
-        installTrustManager();
-        URL url = new URL("https://datosabiertos.malaga.eu/api/3/action/datastore_search?resource_id=3bb304f9-9de3-4bac-943e-7acce7e8e8f9");     
-        return getRecord("NUM_LIBRES", getRecords(url), id);
+        return getGeojson(url).toString();
     }
     
     @GET
@@ -85,7 +76,16 @@ public class DatosREST {
         installTrustManager();
         addHeaders();
         URL url = new URL("https://datosabiertos.malaga.eu/api/3/action/datastore_search?resource_id=9b3b8fe2-8c03-4420-b718-f36ea541f8fd");
-        return getRecords(url).toString();
+        return getGeojson(url).toString();
+    }
+    
+    @GET
+    @Path("plazas_libres/{id}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String aparcamientosLibresREST(@PathParam("id") Integer id) throws MalformedURLException, IOException, JSONException {
+        installTrustManager();
+        URL url = new URL("https://datosabiertos.malaga.eu/api/3/action/datastore_search?resource_id=3bb304f9-9de3-4bac-943e-7acce7e8e8f9");     
+        return getFeature("NUM_LIBRES", getFeatures(getGeojson(url)), id);
     }
     
     @GET
@@ -95,7 +95,7 @@ public class DatosREST {
         installTrustManager();
         addHeaders();
         URL url = new URL("https://datosabiertos.malaga.eu/api/3/action/datastore_search?resource_id=8d0f2d6e-b99d-42f1-929e-8bf25938af27");
-        return fuenteMasCercana(x,y,getRecords(url)).toString();
+        return fuenteMasCercana(x,y,getFeatures(getGeojson(url))).toString();
     }
     
     @GET
@@ -105,7 +105,7 @@ public class DatosREST {
         installTrustManager();
         addHeaders();
         URL url = new URL("https://datosabiertos.malaga.eu/api/3/action/datastore_search?resource_id=3bb304f9-9de3-4bac-943e-7acce7e8e8f9");
-        return biciMasCercana(x,y,getRecords(url)).toString();
+        return biciMasCercana(x,y,getFeatures(getGeojson(url))).toString();
     }
         
     
@@ -141,7 +141,7 @@ public class DatosREST {
         }
     }
 
-    private JSONArray getRecords(URL url) throws JSONException, IOException {
+    private JSONObject getGeojson(URL url) throws JSONException, IOException {
         HttpsURLConnection conn = (HttpsURLConnection)url.openConnection();
         conn.addRequestProperty("Access-Control-Allow-Origin", "localhost:8080");
         BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
@@ -154,11 +154,10 @@ public class DatosREST {
         in.close();
         
         JSONObject json = new JSONObject(response.toString());
-        JSONArray records = json.getJSONObject("result").getJSONArray("records");
-        return records;
+        return json;
     }
     
-    private String getRecord( String record, JSONArray records, Integer id) throws JSONException {
+    private String getFeature( String record, JSONArray records, Integer id) throws JSONException {
         int i=0;
         while(i<records.length()){
             if(records.getJSONObject(i).getInt("ID")==id){
@@ -183,6 +182,11 @@ public class DatosREST {
             i++;
         }
         return res;
+    }
+    
+    
+    private JSONArray getFeatures(JSONObject json) throws JSONException{
+        return json.getJSONArray("features");
     }
     
     private JSONObject biciMasCercana(Double x, Double y, JSONArray records) throws JSONException {
