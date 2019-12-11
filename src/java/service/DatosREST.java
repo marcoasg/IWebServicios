@@ -84,6 +84,7 @@ public class DatosREST {
     @Produces(MediaType.TEXT_PLAIN)
     public String aparcamientosLibresREST(@PathParam("id") Integer id) throws MalformedURLException, IOException, JSONException {
         installTrustManager();
+        addHeaders();
         URL url = new URL("https://datosabiertos.malaga.eu/api/3/action/datastore_search?resource_id=3bb304f9-9de3-4bac-943e-7acce7e8e8f9");     
         return getFeature("NUM_LIBRES", getRecords(getGeojson(url)), id);
     }
