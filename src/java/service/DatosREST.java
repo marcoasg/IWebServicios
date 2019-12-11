@@ -170,7 +170,7 @@ public class DatosREST {
     private String getFeature( String record, JSONArray records, Integer id) throws JSONException {
         int i=0;
         while(i<records.length()){
-            if(records.getJSONObject(i).getInt("ID_EXTERNO")==id){
+            if(records.getJSONObject(i).get("ID_EXTERNO").toString().equals(Integer.toString(id))){
                 return records.getJSONObject(i).get(record).toString();
             }
             i++;
