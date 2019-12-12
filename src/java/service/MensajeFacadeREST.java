@@ -11,6 +11,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -19,6 +20,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -28,6 +30,13 @@ import javax.ws.rs.core.MediaType;
 @Stateless
 @Path("entity.mensaje")
 public class MensajeFacadeREST extends AbstractFacade<Mensaje> {
+    
+    @Context
+    private HttpServletResponse response;
+
+    private void addHeaders() {
+        response.addHeader("Access-Control-Allow-Origin", "*");
+    }
 
     @PersistenceContext(unitName = "IngWebServiciosBDPU")
     private EntityManager em;
@@ -40,6 +49,7 @@ public class MensajeFacadeREST extends AbstractFacade<Mensaje> {
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(Mensaje entity) {
+        addHeaders();
         super.create(entity);
     }
 
@@ -47,12 +57,14 @@ public class MensajeFacadeREST extends AbstractFacade<Mensaje> {
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void edit(@PathParam("id") Integer id, Mensaje entity) {
+        addHeaders();
         super.edit(entity);
     }
 
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
+        addHeaders();
         super.remove(super.find(id));
     }
 
@@ -60,6 +72,7 @@ public class MensajeFacadeREST extends AbstractFacade<Mensaje> {
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Mensaje find(@PathParam("id") Integer id) {
+        addHeaders();
         return super.find(id);
     }
 
@@ -67,6 +80,7 @@ public class MensajeFacadeREST extends AbstractFacade<Mensaje> {
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Mensaje> findAll() {
+        addHeaders();
         return super.findAll();
     }
 
@@ -74,6 +88,7 @@ public class MensajeFacadeREST extends AbstractFacade<Mensaje> {
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Mensaje> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
+        addHeaders();
         return super.findRange(new int[]{from, to});
     }
 
@@ -81,6 +96,7 @@ public class MensajeFacadeREST extends AbstractFacade<Mensaje> {
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
     public String countREST() {
+        addHeaders();
         return String.valueOf(super.count());
     }
     
@@ -88,6 +104,7 @@ public class MensajeFacadeREST extends AbstractFacade<Mensaje> {
     @Path("from_hilo/{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Mensaje> mensajesHilo(@PathParam("id") Integer id){
+        addHeaders();
         return em.createNamedQuery("Mensaje.findByHilo").setParameter("id", id).getResultList();
     }
 
@@ -95,6 +112,7 @@ public class MensajeFacadeREST extends AbstractFacade<Mensaje> {
     @Path("findByIntervaloFechas/{fechaMinima}/{fechaMaxima}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Mensaje> findByIntervaloFechas(@PathParam("fechaMinima") Date fechaMinima, @PathParam("fechaMaxima") Date fechaMaxima){
+        addHeaders();
         return em.createNamedQuery("Mensaje.findByIntervaloFechas").setParameter("fechaMinima", fechaMinima).setParameter("fechaMaxima", fechaMaxima).getResultList();
     }
     
