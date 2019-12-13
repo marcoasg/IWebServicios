@@ -6,8 +6,9 @@
 package service;
 
 import entity.Mensaje;
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.OPTIONS;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -22,6 +24,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  *
@@ -30,12 +33,17 @@ import javax.ws.rs.core.MediaType;
 @Stateless
 @Path("entity.mensaje")
 public class MensajeFacadeREST extends AbstractFacade<Mensaje> {
-    
+
+    @EJB
+    private HiloFacadeREST hiloREST;
+
     @Context
     private HttpServletResponse response;
 
     private void addHeaders() {
         response.addHeader("Access-Control-Allow-Origin", "*");
+        response.addHeader("Access-Control-Allow-Headers", "Content-Type, Accept");
+        response.addHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS");
     }
 
     @PersistenceContext(unitName = "IngWebServiciosBDPU")
@@ -50,6 +58,18 @@ public class MensajeFacadeREST extends AbstractFacade<Mensaje> {
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(Mensaje entity) {
         addHeaders();
+        entity.setFecha(new Date());
+        System.err.println(entity.getHilo().toString());
+        super.create(entity);
+    }
+
+    @POST
+    @Path("hilo/{hilo}")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void create2(@PathParam("hilo") Integer hilo, Mensaje entity) {
+        //addHeaders();
+        entity.setFecha(new Date());
+        entity.setHilo(hiloREST.find(hilo));
         super.create(entity);
     }
 
@@ -99,11 +119,11 @@ public class MensajeFacadeREST extends AbstractFacade<Mensaje> {
         addHeaders();
         return String.valueOf(super.count());
     }
-    
+
     @GET
     @Path("from_hilo/{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Mensaje> mensajesHilo(@PathParam("id") Integer id){
+    public List<Mensaje> mensajesHilo(@PathParam("id") Integer id) {
         addHeaders();
         return em.createNamedQuery("Mensaje.findByHilo").setParameter("id", id).getResultList();
     }
@@ -111,14 +131,35 @@ public class MensajeFacadeREST extends AbstractFacade<Mensaje> {
     @GET
     @Path("findByIntervaloFechas/{fechaMinima}/{fechaMaxima}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Mensaje> findByIntervaloFechas(@PathParam("fechaMinima") Date fechaMinima, @PathParam("fechaMaxima") Date fechaMaxima){
+    public List<Mensaje> findByIntervaloFechas(@PathParam("fechaMinima") Date fechaMinima, @PathParam("fechaMaxima") Date fechaMaxima) {
         addHeaders();
         return em.createNamedQuery("Mensaje.findByIntervaloFechas").setParameter("fechaMinima", fechaMinima).setParameter("fechaMaxima", fechaMaxima).getResultList();
     }
-    
+
+    @OPTIONS
+    public Response opts() {
+        Response r = Response.ok("")
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Headers", "Content-Type, Accept")
+                .header("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS")
+                .build();
+        return r;
+    }
+
+    @OPTIONS
+    @Path("hilo/{hilo}")
+    public Response opts2() {
+        Response r = Response.ok("")
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Headers", "Content-Type, Accept")
+                .header("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS")
+                .build();
+        return r;
+    }
+
     @Override
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
 }

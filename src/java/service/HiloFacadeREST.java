@@ -21,7 +21,6 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -55,7 +54,6 @@ public class HiloFacadeREST extends AbstractFacade<Hilo> {
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(Hilo entity) {
         addHeaders();
-        System.err.println(entity.getUsuario().getEmail());
         entity.setFecha(new Date());
         super.create(entity);
     }
