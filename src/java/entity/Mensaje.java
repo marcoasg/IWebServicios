@@ -60,6 +60,9 @@ public class Mensaje implements Serializable {
     @JoinColumn(name = "hilo", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Hilo hilo;
+    @Size(max = 50)
+    @Column(name = "imagen")
+    private String imagen;
     @JoinColumn(name = "usuario", referencedColumnName = "email")
     @ManyToOne(optional = false)
     private Usuario usuario;
@@ -115,6 +118,14 @@ public class Mensaje implements Serializable {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+    
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
     }
 
     @Override
