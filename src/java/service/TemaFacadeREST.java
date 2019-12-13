@@ -46,7 +46,7 @@ public class TemaFacadeREST extends AbstractFacade<Tema> {
 
     @POST
     @Override
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
     public void create(Tema entity) {
         addHeaders();
         super.create(entity);
@@ -54,7 +54,7 @@ public class TemaFacadeREST extends AbstractFacade<Tema> {
 
     @PUT
     @Path("{id}")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
     public void edit(@PathParam("id") String id, Tema entity) {
         addHeaders();
         super.edit(entity);
@@ -69,7 +69,7 @@ public class TemaFacadeREST extends AbstractFacade<Tema> {
 
     @GET
     @Path("{id}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
     public Tema find(@PathParam("id") String id) {
         addHeaders();
         return super.find(id);
@@ -77,7 +77,7 @@ public class TemaFacadeREST extends AbstractFacade<Tema> {
 
     @GET
     @Override
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
     public List<Tema> findAll() {
         addHeaders();
         return super.findAll();
@@ -85,7 +85,7 @@ public class TemaFacadeREST extends AbstractFacade<Tema> {
 
     @GET
     @Path("{from}/{to}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
     public List<Tema> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         addHeaders();
         return super.findRange(new int[]{from, to});
